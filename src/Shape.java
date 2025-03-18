@@ -1,2 +1,3 @@
-public class Shape {
+public class Shape extends Display {
+
 }
