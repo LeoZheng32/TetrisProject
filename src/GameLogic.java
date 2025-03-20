@@ -3,7 +3,6 @@ public class GameLogic {
     Shape[][] shapeArr;
 
     public GameLogic() {
-        shapeArr = new Shape[7];
     }
 
 

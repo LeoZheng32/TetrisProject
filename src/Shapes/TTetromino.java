@@ -8,7 +8,7 @@ public class TTetromino extends Shape {
     @Override
     public void rotate() {
         incrementRotation();
-        if (getRotation() == 0 || getRotation() == 4) {
+        if (getRotation() == 0) {
             setShape(new int[][]{{0, 3, 0},
                                  {3, 3, 3},
                                  {0, 0, 0}});
