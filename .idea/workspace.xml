@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ef70985-e51f-47af-9ea6-1886d4803720" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Shapes/JTetromino.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Shapes/LTetromino.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Shapes/ZTetromino.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GameLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ITetromino.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shapes/ITetromino.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/OTetromino.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shapes/OTetromino.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/STetromino.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shapes/STetromino.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Shape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shapes/Shape.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TTetromino.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shapes/TTetromino.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/untitled3.iml" afterDir="false" />
-    </list>
+    <list default="true" id="5ef70985-e51f-47af-9ea6-1886d4803720" name="Changes" comment="Day 5: Current Progress" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
