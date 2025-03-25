@@ -4,9 +4,11 @@ public class TetrisRunner {
         GameLogic hi = new GameLogic();
         hi.printCords();
         hi.printArr();
-        hi.moveBlockLeft();
-        hi.updateFallingBlock();
-        System.out.println();
-        hi.printArr();
+//        hi.moveBlockLeft();
+//        hi.updateFallingBlock();
+//        System.out.println();
+//        hi.printArr();
+//
+
     }
 }

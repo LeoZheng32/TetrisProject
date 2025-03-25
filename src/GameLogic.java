@@ -32,24 +32,45 @@ public class GameLogic {
         }
     }
 
-    public void updateFallingBlock() {
+
+
+    public void updateFallingBlock(String direction) {
+        int blockNum = arr[currentFallingBlock.getFirst().getRowIdx()][currentFallingBlock.getFirst().getColIdx()];
+        for (Coordinate cord : currentFallingBlock) {
+            arr[cord.getRowIdx()][cord.getColIdx()] = 0;
+        }
         for (Coordinate cord : currentFallingBlock) {
             int row = cord.getRowIdx();
             int col = cord.getColIdx();
-            int temp = arr[row][col];
-            arr[row][col] = 0;
-            arr[row+1][col] = temp;
-            cord.decrementRowIdx();
+            if (direction.equals("down")) {
+                arr[row + 1][col] = blockNum;
+                cord.decrementRowIdx();
+            } else if (direction.equals("left")) {
+                arr[row][col-1] = blockNum;
+                cord.setColIdx(-1);
+            } else if (direction.equals("right")) {
+                arr[row][col+1] = blockNum;
+                cord.setColIdx(1);
+            }
         }
     }
 
-    public void moveBlockLeft() {
+    public boolean canMoveLeft() {
         for (Coordinate cord : currentFallingBlock) {
+            if (cord.getColIdx() == 0) {
+                return false;
+            }
         }
+        return true;
     }
 
-    public void moveBlockRight() {
-
+    public boolean canMoveRight() {
+        for (Coordinate cord : currentFallingBlock) {
+            if (cord.getColIdx() == 19) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
