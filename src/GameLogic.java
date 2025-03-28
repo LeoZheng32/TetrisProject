@@ -20,6 +20,10 @@ public class GameLogic implements ActionListener {
         currentFallingBlock = new ArrayList<>();
         indexOfStartingRow = 0;
         indexOfStartingCol = 3;
+        boardArr[5][4] = 9;
+        //boardArr[6][8] = 9;
+        printArr();
+        System.out.println("kgKEFFFFFFek\n");
         generateGridBox();
         generateBlock();
         timer = new Timer(1000, this);
@@ -51,7 +55,7 @@ public class GameLogic implements ActionListener {
             int col = cord.getColIdx();
             if (direction.equals("down")) {
                 boardArr[row + 1][col] = blockNum;
-                cord.decrementRowIdx();
+                cord.incrementRowIdx();
             } else if (direction.equals("left")) {
                 boardArr[row][col-1] = blockNum;
                 cord.setColIdx(-1);
@@ -63,36 +67,61 @@ public class GameLogic implements ActionListener {
     }
 
     public boolean canMoveLeft() {
-        ArrayList<Integer> uniqueRowIdx = new ArrayList<>();
-        ArrayList<Integer> lowestColIdxPerRow = new ArrayList<>();
-        for (int i = 0; i < currentFallingBlock.size(); i++) {
-            if (!uniqueRowIdx.contains(currentFallingBlock.get(i).getRowIdx())) {
-                uniqueRowIdx.add(currentFallingBlock.get(i).getRowIdx());
+        for (Coordinate cord : currentFallingBlock) {
+            if (cord.getColIdx() == 0) {
+                return false;
             }
-        }
-        for (int rowIdx : uniqueRowIdx) {
-            int lowestColIdx = 20;
-            for (Coordinate cord : currentFallingBlock) {
-                if (cord.getColIdx() < lowestColIdx) {
-                    lowestColIdx = cord.getColIdx();
+            if (boardArr[cord.getRowIdx()][cord.getColIdx()-1] != 0) {
+                boolean inCurrentFallingBlock = false;
+                for (Coordinate coordinate : currentFallingBlock) {
+                    if (coordinate.compareRowCol(cord.getRowIdx(), cord.getColIdx()-1)) {
+                        inCurrentFallingBlock = true;
+                    }
                 }
-            }
-            lowestColIdxPerRow.add(lowestColIdx);
-        }
-        for (int i = 0; i < lowestColIdxPerRow.size(); i++) {
-            if (lowestColIdxPerRow.get(i) == 0) {
-                return false;
-            } else if (boardArr[uniqueRowIdx.get(i)][lowestColIdxPerRow.get(i)-1] != 0) {
-                return false;
+                if (!inCurrentFallingBlock) {
+                    return false;
+                }
             }
         }
         return true;
     }
 
+
     public boolean canMoveRight() {
         for (Coordinate cord : currentFallingBlock) {
-            if (cord.getColIdx() == 19) {
+            if (cord.getColIdx() == 9) {
                 return false;
+            }
+            if (boardArr[cord.getRowIdx()][cord.getColIdx()+1] != 0) {
+                boolean inCurrentFallingBlock = false;
+                for (Coordinate coordinate : currentFallingBlock) {
+                    if (coordinate.compareRowCol(cord.getRowIdx(), cord.getColIdx()+1)) {
+                        inCurrentFallingBlock = true;
+                    }
+                }
+                if (!inCurrentFallingBlock) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean canMoveDown() {
+        for (Coordinate cord : currentFallingBlock) {
+            if (cord.getRowIdx() == 19) {
+                return false;
+            }
+            if (boardArr[cord.getRowIdx()+1][cord.getColIdx()] != 0) {
+                boolean inCurrentFallingBlock = false;
+                for (Coordinate coordinate : currentFallingBlock) {
+                    if (coordinate.compareRowCol(cord.getRowIdx()+1, cord.getColIdx())) {
+                        inCurrentFallingBlock = true;
+                    }
+                }
+                if (!inCurrentFallingBlock) {
+                    return false;
+                }
             }
         }
         return true;

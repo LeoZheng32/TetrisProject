@@ -25,7 +25,7 @@ public class Coordinate {
         return colIdx;
     }
 
-    public void decrementRowIdx() {
+    public void incrementRowIdx() {
         rowIdx++;
     }
 
@@ -47,5 +47,9 @@ public class Coordinate {
 
     public int getY2() {
         return y2;
+    }
+
+    public boolean compareRowCol(int row, int col) {
+        return rowIdx == row && colIdx == col;
     }
 }
