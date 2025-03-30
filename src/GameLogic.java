@@ -4,10 +4,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GameLogic implements ActionListener {
-    int[][] boardArr = new int[20][10];
+    Shape[][] boardArr;
+    Shape[][] currentFallingBlock;
+    private MakeShape shapeGenerator;
     int indexOfStartingRow;
     int indexOfStartingCol;
-    ArrayList<Coordinate> currentFallingBlock;
     ArrayList<Coordinate> cords;
     Shape[] shapeArr;
     private Timer timer;
@@ -15,92 +16,84 @@ public class GameLogic implements ActionListener {
 
 
     public GameLogic() {
-        shapeArr = new Shape[]{new ITetromino(), new OTetromino(), new TTetromino(), new STetromino(), new ZTetromino(), new JTetromino(), new LTetromino()};
+        boardArr = new Shape[20][10];
         cords = new ArrayList<>();
-        currentFallingBlock = new ArrayList<>();
-        indexOfStartingRow = 0;
-        indexOfStartingCol = 3;
-        boardArr[5][4] = 9;
+        shapeGenerator = new MakeShape();
+//        indexOfStartingRow = 0;
+//        indexOfStartingCol = 3;
+         boardArr[10][3] = new Shape("$", 10, 3);
         //boardArr[6][8] = 9;
-        printArr();
-        System.out.println("kgKEFFFFFFek\n");
         generateGridBox();
         generateBlock();
-        timer = new Timer(1000, this);
-        timer.start();
+//        timer = new Timer(1000, this);
+//        timer.start();
     }
 
+    // Generate a block onto the boardArr
     public void generateBlock() {
-        int idx = (int) (Math.random() * 7);
-        int[][] shape = shapeArr[idx].getShape();
-        for (int row = 0; row < shape.length; row++) {
-            for (int col = 0; col < shape[0].length; col++) {
-                boardArr[indexOfStartingRow+row][indexOfStartingCol+col] = shape[row][col];
-                if (boardArr[indexOfStartingRow+row][indexOfStartingCol+col] != 0) {
-                    currentFallingBlock.add(new Coordinate(indexOfStartingRow+row, indexOfStartingCol+col));
+        currentFallingBlock = shapeGenerator.randomSelectedShape();
+        for (Shape[] shapes : currentFallingBlock) {
+            for (int col = 0; col < currentFallingBlock[0].length; col++) {
+                if (shapes[col] != null) {
+                    boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
                 }
             }
         }
     }
-
 
 
     public void updateFallingBlock(String direction) {
-        int blockNum = boardArr[currentFallingBlock.getFirst().getRowIdx()][currentFallingBlock.getFirst().getColIdx()];
-        for (Coordinate cord : currentFallingBlock) {
-            boardArr[cord.getRowIdx()][cord.getColIdx()] = 0;
+        // Clears previous blocks
+        for (Shape[] shapes : currentFallingBlock) {
+            for (int col = 0; col < shapes.length; col++) {
+                if (shapes[col] != null) {
+                    boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = null;
+                }
+            }
         }
-        for (Coordinate cord : currentFallingBlock) {
-            int row = cord.getRowIdx();
-            int col = cord.getColIdx();
-            if (direction.equals("down")) {
-                boardArr[row + 1][col] = blockNum;
-                cord.incrementRowIdx();
-            } else if (direction.equals("left")) {
-                boardArr[row][col-1] = blockNum;
-                cord.setColIdx(-1);
-            } else if (direction.equals("right")) {
-                boardArr[row][col+1] = blockNum;
-                cord.setColIdx(1);
+
+        // Update each block positions and re-update them on the boardArr
+        for (Shape[] shapes : currentFallingBlock) {
+            for (int col = 0; col < shapes.length; col++) {
+                if (shapes[col] != null) {
+                    if (direction.equals("down")) {
+                        shapes[col].incrementRowPos();
+                    } else if (direction.equals("left")) {
+                        shapes[col].changeColPos(-1);
+                    } else if (direction.equals("right")) {
+                        shapes[col].changeColPos(1);
+                    }
+                    boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
+                }
             }
         }
     }
 
+    // Checks if it can move to the left
     public boolean canMoveLeft() {
-        for (Coordinate cord : currentFallingBlock) {
-            if (cord.getColIdx() == 0) {
-                return false;
-            }
-            if (boardArr[cord.getRowIdx()][cord.getColIdx()-1] != 0) {
-                boolean inCurrentFallingBlock = false;
-                for (Coordinate coordinate : currentFallingBlock) {
-                    if (coordinate.compareRowCol(cord.getRowIdx(), cord.getColIdx()-1)) {
-                        inCurrentFallingBlock = true;
+        for (Shape[] shapes : currentFallingBlock) {
+            for (int col = 0; col < shapes.length; col++) {
+                if (shapes[col] != null) {
+                    if (shapes[col].getColPos() != 0 && boardArr[shapes[col].getRowPos()][shapes[col].getColPos() - 1] == null) {
+                        break;
+                    } else {
+                        return false;
                     }
-                }
-                if (!inCurrentFallingBlock) {
-                    return false;
                 }
             }
         }
         return true;
     }
 
-
     public boolean canMoveRight() {
-        for (Coordinate cord : currentFallingBlock) {
-            if (cord.getColIdx() == 9) {
-                return false;
-            }
-            if (boardArr[cord.getRowIdx()][cord.getColIdx()+1] != 0) {
-                boolean inCurrentFallingBlock = false;
-                for (Coordinate coordinate : currentFallingBlock) {
-                    if (coordinate.compareRowCol(cord.getRowIdx(), cord.getColIdx()+1)) {
-                        inCurrentFallingBlock = true;
+        for (Shape[] shapes : currentFallingBlock) {
+            for (int col = shapes.length-1; col >= 0; col--) {
+                if (shapes[col] != null) {
+                    if (shapes[col].getColPos() != 9 && boardArr[shapes[col].getRowPos()][shapes[col].getColPos() + 1] == null) {
+                        break;
+                    } else {
+                        return false;
                     }
-                }
-                if (!inCurrentFallingBlock) {
-                    return false;
                 }
             }
         }
@@ -108,30 +101,28 @@ public class GameLogic implements ActionListener {
     }
 
     public boolean canMoveDown() {
-        for (Coordinate cord : currentFallingBlock) {
-            if (cord.getRowIdx() == 19) {
-                return false;
-            }
-            if (boardArr[cord.getRowIdx()+1][cord.getColIdx()] != 0) {
-                boolean inCurrentFallingBlock = false;
-                for (Coordinate coordinate : currentFallingBlock) {
-                    if (coordinate.compareRowCol(cord.getRowIdx()+1, cord.getColIdx())) {
-                        inCurrentFallingBlock = true;
+        for (int col = 0; col < currentFallingBlock[0].length; col++) {
+            for (int row = currentFallingBlock.length-1; row >= 0; row--) {
+                if (currentFallingBlock[row][col] != null) {
+                    if (currentFallingBlock[row][col].getColPos() != 19 &&
+                            boardArr[currentFallingBlock[row][col].getRowPos()+1][currentFallingBlock[row][col].getColPos()] == null) {
+                        break;
+                    } else {
+                        return false;
                     }
-                }
-                if (!inCurrentFallingBlock) {
-                    return false;
                 }
             }
         }
         return true;
     }
 
-
     public void printArr() {
-        for (int i = 0; i < boardArr.length; i++) {
-            for (int j = 0; j < boardArr[0].length; j++) {
-                System.out.print(boardArr[i][j]);
+        for (Shape[] shapes : boardArr) {
+            for (int j = 0; j < shapes.length; j++) {
+                if (shapes[j] != null)
+                    System.out.print(shapes[j]);
+                else
+                    System.out.print("n");
             }
             System.out.println();
         }
@@ -157,4 +148,5 @@ public class GameLogic implements ActionListener {
         paused = !paused;
         //System.out.println(time);
     }
+
 }

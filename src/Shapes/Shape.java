@@ -1,19 +1,30 @@
 public class Shape extends Display {
     private String name;
-    private int[][] shape;
+    private int rowPos;
+    private int colPos;
     private int rotation;
 
-    public Shape(String name, int[][] shape) {
+    public Shape(String name, int rowPos, int colPos) {
         this.name = name;
-        this.shape = shape;
+        this.rowPos = rowPos;
+        this.colPos = colPos;
         rotation = 0;
     }
-    public int[][] getShape() {
-        return shape;
+
+    public int getRowPos() {
+        return rowPos;
     }
 
-    public void setShape(int[][] shape) {
-        this.shape = shape;
+    public int getColPos() {
+        return colPos;
+    }
+
+    public void incrementRowPos() {
+        rowPos++;
+    }
+
+    public void changeColPos(int num) {
+        colPos += num;
     }
 
     public String toString() {
