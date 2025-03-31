@@ -4,11 +4,25 @@ public class Shape extends Display {
     private int colPos;
     private int rotation;
 
+    public Shape[][] shapeArr;
+
     public Shape(String name, int rowPos, int colPos) {
         this.name = name;
         this.rowPos = rowPos;
         this.colPos = colPos;
         rotation = 0;
+    }
+
+    public Shape[][] getShapeArr() {
+        return shapeArr;
+    }
+
+    public void setShapeArr(Shape[][] arr) {
+        shapeArr = arr;
+    }
+
+    public Shape(Shape[][] shapeArr) {
+        this.shapeArr = shapeArr;
     }
 
     public int getRowPos() {
@@ -27,6 +41,10 @@ public class Shape extends Display {
         colPos += num;
     }
 
+    public void changeRowPos(int num) {
+        rowPos += num;
+    }
+
     public String toString() {
         return name;
     }
@@ -39,13 +57,7 @@ public class Shape extends Display {
         rotation = num;
     }
 
-    public void decrementRotation() {
-        rotation--;
+    public Shape[][] rotate() {
+        return shapeArr;
     }
-
-    public void incrementRotation() {
-        rotation++;
-    }
-
-    public void rotate() {}
 }

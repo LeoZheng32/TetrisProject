@@ -6,13 +6,14 @@ public class TetrisRunner {
         GameLogic hi = new GameLogic();
         System.out.println();
         hi.printArr();
-        for (int i = 0; i < 20; i++) {
+        System.out.println();
+        hi.updateFallingBlock("down");
+        hi.updateFallingBlock("down");
+        System.out.println("---------------------------------------------------");
+        for (int i = 0; i < 4; i++) {
             System.out.println();
-            if (hi.canMoveDown()) {
-                hi.updateFallingBlock("down");
-            }
+            hi.rotateBlock();
             hi.printArr();
         }
-
     }
 }

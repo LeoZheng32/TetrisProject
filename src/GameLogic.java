@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 public class GameLogic implements ActionListener {
     Shape[][] boardArr;
-    Shape[][] currentFallingBlock;
+    //Shape[][] currentFallingBlock;
+    Shape currentFallingBlock;
     private MakeShape shapeGenerator;
     int indexOfStartingRow;
     int indexOfStartingCol;
@@ -16,12 +17,13 @@ public class GameLogic implements ActionListener {
 
 
     public GameLogic() {
+
         boardArr = new Shape[20][10];
         cords = new ArrayList<>();
         shapeGenerator = new MakeShape();
 //        indexOfStartingRow = 0;
 //        indexOfStartingCol = 3;
-         boardArr[10][3] = new Shape("$", 10, 3);
+         //boardArr[10][3] = new Shape("$", 10, 3);
         //boardArr[6][8] = 9;
         generateGridBox();
         generateBlock();
@@ -31,9 +33,10 @@ public class GameLogic implements ActionListener {
 
     // Generate a block onto the boardArr
     public void generateBlock() {
-        currentFallingBlock = shapeGenerator.randomSelectedShape();
-        for (Shape[] shapes : currentFallingBlock) {
-            for (int col = 0; col < currentFallingBlock[0].length; col++) {
+        currentFallingBlock = createObject(shapeGenerator.randomSelectedShape());
+        Shape[][] current = currentFallingBlock.getShapeArr();
+        for (Shape[] shapes : current) {
+            for (int col = 0; col < current[0].length; col++) {
                 if (shapes[col] != null) {
                     boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
                 }
@@ -41,19 +44,49 @@ public class GameLogic implements ActionListener {
         }
     }
 
+    public Shape createObject(Shape[][] selectedShape) {
+        if (selectedShape[1][1] instanceof IBlock) {
+            return new IBlock(selectedShape);
+        } else if (selectedShape[1][1] instanceof JBlock) {;
+            return new JBlock(selectedShape);
+        } else if (selectedShape[1][1] instanceof LBlock) {
+            return new LBlock(selectedShape);
+        } else if (selectedShape[1][1] instanceof OBlock) {
+            return new OBlock(selectedShape);
+        } else if (selectedShape[1][1] instanceof SBlock) {
+            return new SBlock(selectedShape);
+        } else if (selectedShape[1][1] instanceof TBlock) {
+            return new TBlock(selectedShape);
+        } else {
+            return new ZBlock(selectedShape);
+        }
+    }
 
-    public void updateFallingBlock(String direction) {
-        // Clears previous blocks
-        for (Shape[] shapes : currentFallingBlock) {
+    public void removeFallingBlock() {
+        for (Shape[] shapes : currentFallingBlock.getShapeArr()) {
             for (int col = 0; col < shapes.length; col++) {
                 if (shapes[col] != null) {
                     boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = null;
                 }
             }
         }
+    }
+
+    public void addFallingBLock() {
+        for (Shape[] shapes : currentFallingBlock.getShapeArr()) {
+            for (int col = 0; col < shapes.length; col++) {
+                if (shapes[col] != null) {
+                    boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
+                }
+            }
+        }
+    }
+
+    public void updateFallingBlock(String direction) {
+        removeFallingBlock();
 
         // Update each block positions and re-update them on the boardArr
-        for (Shape[] shapes : currentFallingBlock) {
+        for (Shape[] shapes : currentFallingBlock.getShapeArr()) {
             for (int col = 0; col < shapes.length; col++) {
                 if (shapes[col] != null) {
                     if (direction.equals("down")) {
@@ -71,7 +104,7 @@ public class GameLogic implements ActionListener {
 
     // Checks if it can move to the left
     public boolean canMoveLeft() {
-        for (Shape[] shapes : currentFallingBlock) {
+        for (Shape[] shapes : currentFallingBlock.getShapeArr()) {
             for (int col = 0; col < shapes.length; col++) {
                 if (shapes[col] != null) {
                     if (shapes[col].getColPos() != 0 && boardArr[shapes[col].getRowPos()][shapes[col].getColPos() - 1] == null) {
@@ -86,7 +119,7 @@ public class GameLogic implements ActionListener {
     }
 
     public boolean canMoveRight() {
-        for (Shape[] shapes : currentFallingBlock) {
+        for (Shape[] shapes : currentFallingBlock.getShapeArr()) {
             for (int col = shapes.length-1; col >= 0; col--) {
                 if (shapes[col] != null) {
                     if (shapes[col].getColPos() != 9 && boardArr[shapes[col].getRowPos()][shapes[col].getColPos() + 1] == null) {
@@ -101,11 +134,12 @@ public class GameLogic implements ActionListener {
     }
 
     public boolean canMoveDown() {
-        for (int col = 0; col < currentFallingBlock[0].length; col++) {
-            for (int row = currentFallingBlock.length-1; row >= 0; row--) {
-                if (currentFallingBlock[row][col] != null) {
-                    if (currentFallingBlock[row][col].getColPos() != 19 &&
-                            boardArr[currentFallingBlock[row][col].getRowPos()+1][currentFallingBlock[row][col].getColPos()] == null) {
+        Shape[][] current = currentFallingBlock.getShapeArr();
+        for (int col = 0; col < current[0].length; col++) {
+            for (int row = current.length-1; row >= 0; row--) {
+                if (current[row][col] != null) {
+                    if (current[row][col].getColPos() != 19 &&
+                            boardArr[current[row][col].getRowPos()+1][current[row][col].getColPos()] == null) {
                         break;
                     } else {
                         return false;
@@ -114,6 +148,13 @@ public class GameLogic implements ActionListener {
             }
         }
         return true;
+    }
+
+    public void rotateBlock() {
+        removeFallingBlock();
+        System.out.println(currentFallingBlock.getClass());
+        currentFallingBlock.setShapeArr(currentFallingBlock.rotate());
+        addFallingBLock();
     }
 
     public void printArr() {
