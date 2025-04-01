@@ -7,15 +7,6 @@
     <list default="true" id="5ef70985-e51f-47af-9ea6-1886d4803720" name="Changes" comment="3/29/2025">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GameLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MakeShape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MakeShape.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Shapes/IBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shapes/IBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Shapes/JBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shapes/JBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Shapes/LBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shapes/LBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Shapes/OBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shapes/OBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Shapes/SBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shapes/SBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Shapes/Shape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shapes/Shape.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Shapes/TBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shapes/TBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Shapes/ZBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shapes/ZBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TetrisRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TetrisRunner.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,7 +33,7 @@
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/LeoZheng32/TetrisProject.git",
-    "accountId": "ce31f654-50aa-409f-b908-87a9f23759c9"
+    "accountId": "2e7443a1-e74e-4ada-95fe-fa5d565f36b6"
   }
 }]]></component>
   <component name="ProjectColorInfo">{

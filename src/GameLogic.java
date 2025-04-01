@@ -23,7 +23,7 @@ public class GameLogic implements ActionListener {
         shapeGenerator = new MakeShape();
 //        indexOfStartingRow = 0;
 //        indexOfStartingCol = 3;
-         //boardArr[10][3] = new Shape("$", 10, 3);
+         boardArr[2][5] = new Shape("$", 2, 5);
         //boardArr[6][8] = 9;
         generateGridBox();
         generateBlock();
@@ -34,14 +34,7 @@ public class GameLogic implements ActionListener {
     // Generate a block onto the boardArr
     public void generateBlock() {
         currentFallingBlock = createObject(shapeGenerator.randomSelectedShape());
-        Shape[][] current = currentFallingBlock.getShapeArr();
-        for (Shape[] shapes : current) {
-            for (int col = 0; col < current[0].length; col++) {
-                if (shapes[col] != null) {
-                    boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
-                }
-            }
-        }
+        addFallingBLock();
     }
 
     public Shape createObject(Shape[][] selectedShape) {
@@ -152,9 +145,39 @@ public class GameLogic implements ActionListener {
 
     public void rotateBlock() {
         removeFallingBlock();
-        System.out.println(currentFallingBlock.getClass());
-        currentFallingBlock.setShapeArr(currentFallingBlock.rotate());
+        Shape[][] rotatedShape = currentFallingBlock.rotate();
+
+        if (!checkRotateOverLap(rotatedShape)) {
+            removeFallingBlock();
+            currentFallingBlock.setShapeArr(rotatedShape);
+        } else {
+            currentFallingBlock.setRotation(currentFallingBlock.getRotation()-1);
+        }
         addFallingBLock();
+    }
+
+    // Return true if it overlaps or rotate out of the board
+    public boolean checkRotateOverLap(Shape[][] rotatedShape) {
+        boolean overlap = false;
+        for (Shape[] rotatedBlock : rotatedShape) {
+            for (int col = 0; col < rotatedBlock.length; col++) {
+                if (rotatedBlock[col] != null) {
+                    System.out.println("a " + rotatedBlock[col]);
+                    if (rotatedBlock[col].getRowPos() < 0 || rotatedBlock[col].getRowPos() > 19 ||
+                            rotatedBlock[col].getRowPos() < 0 || rotatedBlock[col].getRowPos() > 9) {
+                        System.out.println("-b");
+                        return true;
+                    }
+                    System.out.println("before c: " + boardArr[rotatedBlock[col].getRowPos()][rotatedBlock[col].getColPos()]);
+                    if (boardArr[rotatedBlock[col].getRowPos()][rotatedBlock[col].getColPos()] != null) {
+                        System.out.println("-c");
+                        overlap = true;
+                    }
+                }
+            }
+        }
+        System.out.println("d");
+        return overlap;
     }
 
     public void printArr() {
