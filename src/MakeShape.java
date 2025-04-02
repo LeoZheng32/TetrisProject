@@ -15,8 +15,7 @@ public class MakeShape {
     }
 
     public Shape[][] randomSelectedShape() {
-//        return shapeArr.get((int) (Math.random() * 7));
-        return shapeArr.get(0);
+        return shapeArr.get((int) (Math.random() * 7));
     }
 
     private Shape[][] IShape() {

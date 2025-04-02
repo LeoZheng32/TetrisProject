@@ -80,16 +80,26 @@ public class GameLogic implements ActionListener {
 
         // Update each block positions and re-update them on the boardArr
         for (Shape[] shapes : currentFallingBlock.getShapeArr()) {
-            for (int col = 0; col < shapes.length; col++) {
-                if (shapes[col] != null) {
-                    if (direction.equals("down")) {
+            if (direction.equals("down") && canMoveDown()) {
+                for (int col = 0; col < shapes.length; col++) {
+                    if (shapes[col] != null) {
                         shapes[col].incrementRowPos();
-                    } else if (direction.equals("left")) {
-                        shapes[col].changeColPos(-1);
-                    } else if (direction.equals("right")) {
-                        shapes[col].changeColPos(1);
+                        boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
                     }
-                    boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
+                }
+            } else if (direction.equals("left") && canMoveLeft()) {
+                for (int col = 0; col < shapes.length; col++) {
+                    if (shapes[col] != null) {
+                        shapes[col].changeColPos(-1);
+                        boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
+                    }
+                }
+            } else if (direction.equals("right") && canMoveRight()) {
+                for (int col = 0; col < shapes.length; col++) {
+                    if (shapes[col] != null) {
+                        shapes[col].changeColPos(1);
+                        boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
+                    }
                 }
             }
         }
@@ -162,15 +172,11 @@ public class GameLogic implements ActionListener {
         for (Shape[] rotatedBlock : rotatedShape) {
             for (int col = 0; col < rotatedBlock.length; col++) {
                 if (rotatedBlock[col] != null) {
-                    System.out.println("a " + rotatedBlock[col]);
                     if (rotatedBlock[col].getRowPos() < 0 || rotatedBlock[col].getRowPos() > 19 ||
                             rotatedBlock[col].getRowPos() < 0 || rotatedBlock[col].getRowPos() > 9) {
-                        System.out.println("-b");
                         return true;
                     }
-                    System.out.println("before c: " + boardArr[rotatedBlock[col].getRowPos()][rotatedBlock[col].getColPos()]);
                     if (boardArr[rotatedBlock[col].getRowPos()][rotatedBlock[col].getColPos()] != null) {
-                        System.out.println("-c");
                         overlap = true;
                     }
                 }
