@@ -23,12 +23,16 @@ public class GameLogic implements ActionListener {
         shapeGenerator = new MakeShape();
 //        indexOfStartingRow = 0;
 //        indexOfStartingCol = 3;
-         boardArr[2][5] = new Shape("$", 2, 5);
+         //boardArr[10][3] = new Shape("$", 10, 3);
         //boardArr[6][8] = 9;
         generateGridBox();
         generateBlock();
 //        timer = new Timer(1000, this);
 //        timer.start();
+    }
+
+    public Shape[][] getBoardArr() {
+        return boardArr;
     }
 
     // Generate a block onto the boardArr
@@ -80,26 +84,16 @@ public class GameLogic implements ActionListener {
 
         // Update each block positions and re-update them on the boardArr
         for (Shape[] shapes : currentFallingBlock.getShapeArr()) {
-            if (direction.equals("down") && canMoveDown()) {
-                for (int col = 0; col < shapes.length; col++) {
-                    if (shapes[col] != null) {
+            for (int col = 0; col < shapes.length; col++) {
+                if (shapes[col] != null) {
+                    if (direction.equals("down")) {
                         shapes[col].incrementRowPos();
-                        boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
-                    }
-                }
-            } else if (direction.equals("left") && canMoveLeft()) {
-                for (int col = 0; col < shapes.length; col++) {
-                    if (shapes[col] != null) {
+                    } else if (direction.equals("left")) {
                         shapes[col].changeColPos(-1);
-                        boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
-                    }
-                }
-            } else if (direction.equals("right") && canMoveRight()) {
-                for (int col = 0; col < shapes.length; col++) {
-                    if (shapes[col] != null) {
+                    } else if (direction.equals("right")) {
                         shapes[col].changeColPos(1);
-                        boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
                     }
+                    boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
                 }
             }
         }
@@ -155,35 +149,9 @@ public class GameLogic implements ActionListener {
 
     public void rotateBlock() {
         removeFallingBlock();
-        Shape[][] rotatedShape = currentFallingBlock.rotate();
-
-        if (!checkRotateOverLap(rotatedShape)) {
-            removeFallingBlock();
-            currentFallingBlock.setShapeArr(rotatedShape);
-        } else {
-            currentFallingBlock.setRotation(currentFallingBlock.getRotation()-1);
-        }
+        System.out.println(currentFallingBlock.getClass());
+        currentFallingBlock.setShapeArr(currentFallingBlock.rotate());
         addFallingBLock();
-    }
-
-    // Return true if it overlaps or rotate out of the board
-    public boolean checkRotateOverLap(Shape[][] rotatedShape) {
-        boolean overlap = false;
-        for (Shape[] rotatedBlock : rotatedShape) {
-            for (int col = 0; col < rotatedBlock.length; col++) {
-                if (rotatedBlock[col] != null) {
-                    if (rotatedBlock[col].getRowPos() < 0 || rotatedBlock[col].getRowPos() > 19 ||
-                            rotatedBlock[col].getRowPos() < 0 || rotatedBlock[col].getRowPos() > 9) {
-                        return true;
-                    }
-                    if (boardArr[rotatedBlock[col].getRowPos()][rotatedBlock[col].getColPos()] != null) {
-                        overlap = true;
-                    }
-                }
-            }
-        }
-        System.out.println("d");
-        return overlap;
     }
 
     public void printArr() {
