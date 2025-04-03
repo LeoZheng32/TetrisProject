@@ -14,25 +14,24 @@ public class GameLogic implements ActionListener {
     Shape[] shapeArr;
     private Timer timer;
     private boolean paused = false;
-
+    TetrisFrame frame;
 
     public GameLogic() {
-
         boardArr = new Shape[20][10];
         cords = new ArrayList<>();
         shapeGenerator = new MakeShape();
-//        indexOfStartingRow = 0;
-//        indexOfStartingCol = 3;
-         //boardArr[10][3] = new Shape("$", 10, 3);
-        //boardArr[6][8] = 9;
         generateGridBox();
         generateBlock();
-//        timer = new Timer(1000, this);
-//        timer.start();
+        timer = new Timer(1000, this);
+        timer.start();
     }
 
     public Shape[][] getBoardArr() {
         return boardArr;
+    }
+
+    public void setFrame(TetrisFrame frame) {
+        this.frame = frame;
     }
 
     // Generate a block onto the boardArr
@@ -185,6 +184,9 @@ public class GameLogic implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         paused = !paused;
         //System.out.println(time);
+        updateFallingBlock("down");
+        frame.reRender();
+        System.out.println(timer);
     }
 
 }
