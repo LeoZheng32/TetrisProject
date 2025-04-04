@@ -1,9 +1,13 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-public class GameLogic implements ActionListener {
+import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
+
+public class GameLogic implements ActionListener, KeyListener {
     Shape[][] boardArr;
     //Shape[][] currentFallingBlock;
     Shape currentFallingBlock;
@@ -24,6 +28,8 @@ public class GameLogic implements ActionListener {
         generateBlock();
         timer = new Timer(1000, this);
         timer.start();
+
+
     }
 
     public Shape[][] getBoardArr() {
@@ -32,6 +38,8 @@ public class GameLogic implements ActionListener {
 
     public void setFrame(TetrisFrame frame) {
         this.frame = frame;
+        frame.getFrame().addKeyListener(this);
+        frame.getFrame().setFocusable(true);
     }
 
     // Generate a block onto the boardArr
@@ -82,17 +90,35 @@ public class GameLogic implements ActionListener {
         removeFallingBlock();
 
         // Update each block positions and re-update them on the boardArr
-        for (Shape[] shapes : currentFallingBlock.getShapeArr()) {
-            for (int col = 0; col < shapes.length; col++) {
-                if (shapes[col] != null) {
-                    if (direction.equals("down")) {
+        if (direction.equals("down") && canMoveDown()) {
+            for (Shape[] shapes : currentFallingBlock.getShapeArr()) {
+                for (int col = 0; col < shapes.length; col++) {
+                    if (shapes[col] != null) {
                         shapes[col].incrementRowPos();
-                    } else if (direction.equals("left")) {
-                        shapes[col].changeColPos(-1);
-                    } else if (direction.equals("right")) {
-                        shapes[col].changeColPos(1);
+                        boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
                     }
-                    boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
+                }
+            }
+        }
+
+        if (direction.equals("left") && canMoveLeft()) {
+            for (Shape[] shapes : currentFallingBlock.getShapeArr()) {
+                for (int col = 0; col < shapes.length; col++) {
+                    if (shapes[col] != null) {
+                        shapes[col].changeColPos(-1);
+                        boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
+                    }
+                }
+            }
+        }
+
+        if (direction.equals("right") && canMoveRight()) {
+            for (Shape[] shapes : currentFallingBlock.getShapeArr()) {
+                for (int col = 0; col < shapes.length; col++) {
+                    if (shapes[col] != null) {
+                        shapes[col].changeColPos(1);
+                        boardArr[shapes[col].getRowPos()][shapes[col].getColPos()] = shapes[col];
+                    }
                 }
             }
         }
@@ -103,7 +129,10 @@ public class GameLogic implements ActionListener {
         for (Shape[] shapes : currentFallingBlock.getShapeArr()) {
             for (int col = 0; col < shapes.length; col++) {
                 if (shapes[col] != null) {
-                    if (shapes[col].getColPos() != 0 && boardArr[shapes[col].getRowPos()][shapes[col].getColPos() - 1] == null) {
+                    if (shapes[col].getColPos() == 0) {
+                        return false;
+                    }
+                    if (boardArr[shapes[col].getRowPos()][shapes[col].getColPos()-1] == null) {
                         break;
                     } else {
                         return false;
@@ -118,7 +147,10 @@ public class GameLogic implements ActionListener {
         for (Shape[] shapes : currentFallingBlock.getShapeArr()) {
             for (int col = shapes.length-1; col >= 0; col--) {
                 if (shapes[col] != null) {
-                    if (shapes[col].getColPos() != 9 && boardArr[shapes[col].getRowPos()][shapes[col].getColPos() + 1] == null) {
+                    if (shapes[col].getColPos() == 9) {
+                        return false;
+                    }
+                    if (boardArr[shapes[col].getRowPos()][shapes[col].getColPos() + 1] == null) {
                         break;
                     } else {
                         return false;
@@ -134,8 +166,10 @@ public class GameLogic implements ActionListener {
         for (int col = 0; col < current[0].length; col++) {
             for (int row = current.length-1; row >= 0; row--) {
                 if (current[row][col] != null) {
-                    if (current[row][col].getColPos() != 19 &&
-                            boardArr[current[row][col].getRowPos()+1][current[row][col].getColPos()] == null) {
+                    if (current[row][col].getRowPos() == 19) {
+                        return false;
+                    }
+                    if (boardArr[current[row][col].getRowPos()+1][current[row][col].getColPos()] == null) {
                         break;
                     } else {
                         return false;
@@ -148,9 +182,35 @@ public class GameLogic implements ActionListener {
 
     public void rotateBlock() {
         removeFallingBlock();
-        System.out.println(currentFallingBlock.getClass());
-        currentFallingBlock.setShapeArr(currentFallingBlock.rotate());
+        Shape[][] rotatedShape = currentFallingBlock.rotate();
+
+        if (!checkRotateOverLap(rotatedShape)) {
+            removeFallingBlock();
+            currentFallingBlock.setShapeArr(rotatedShape);
+        } else {
+            currentFallingBlock.setRotation(currentFallingBlock.getRotation()-1);
+        }
         addFallingBLock();
+    }
+
+    // Return true if it overlaps or rotate out of the board
+    public boolean checkRotateOverLap(Shape[][] rotatedShape) {
+        boolean overlap = false;
+        for (Shape[] rotatedBlock : rotatedShape) {
+            for (int col = 0; col < rotatedBlock.length; col++) {
+                if (rotatedBlock[col] != null) {
+                    if (rotatedBlock[col].getRowPos() < 0 || rotatedBlock[col].getRowPos() > 19 ||
+                            rotatedBlock[col].getRowPos() < 0 || rotatedBlock[col].getRowPos() > 9) {
+                        return true;
+                    }
+                    if (boardArr[rotatedBlock[col].getRowPos()][rotatedBlock[col].getColPos()] != null) {
+                        overlap = true;
+                    }
+                }
+            }
+        }
+        System.out.println("d");
+        return overlap;
     }
 
     public void printArr() {
@@ -181,11 +241,37 @@ public class GameLogic implements ActionListener {
     }
 
     @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+        System.out.println("hello");
+        if (key == 38) {
+            rotateBlock();
+        } else if (key == 40 && canMoveDown()) {
+            updateFallingBlock("down");
+        } else if (key == 37 && canMoveLeft()) {
+            updateFallingBlock("left");
+        } else if (key == 39 && canMoveRight()) {
+            updateFallingBlock("right");
+        }
+        printArr();
+        frame.reRender();
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
+
+
+    @Override
     public void actionPerformed(ActionEvent e) {
         paused = !paused;
-        //System.out.println(time);
-        updateFallingBlock("down");
-        frame.reRender();
+
+//        if (canMoveDown()) {
+//            updateFallingBlock("down");
+//        }
+        //printArr();
         System.out.println(timer);
     }
 

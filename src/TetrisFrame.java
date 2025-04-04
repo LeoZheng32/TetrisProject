@@ -14,14 +14,12 @@ public class TetrisFrame {
         frame.setSize(300, 600);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
-
-
         generateBoard();
-
-//        Display panel = new Display();
-//        frame.add(panel);
-
         frame.setVisible(true);
+    }
+
+    public JFrame getFrame() {
+        return frame;
     }
 
     // For changing the color you have to make a new gridlayout and edit each color
