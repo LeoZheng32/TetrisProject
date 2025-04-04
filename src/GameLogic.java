@@ -28,8 +28,6 @@ public class GameLogic implements ActionListener, KeyListener {
         generateBlock();
         timer = new Timer(1000, this);
         timer.start();
-
-
     }
 
     public Shape[][] getBoardArr() {
@@ -37,6 +35,7 @@ public class GameLogic implements ActionListener, KeyListener {
     }
 
     public void setFrame(TetrisFrame frame) {
+        frame.reRender();
         this.frame = frame;
         frame.getFrame().addKeyListener(this);
         frame.getFrame().setFocusable(true);

@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ef70985-e51f-47af-9ea6-1886d4803720" name="Changes" comment="3/29/2025">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="5ef70985-e51f-47af-9ea6-1886d4803720" name="Changes" comment="4/4/2025">
       <change beforePath="$PROJECT_DIR$/src/GameLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TetrisFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TetrisFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,13 +101,22 @@
       <option name="project" value="LOCAL" />
       <updated>1743304930047</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="4/4/2025">
+      <option name="closed" value="true" />
+      <created>1743778591039</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743778591039</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Day 5: Current Progress" />
     <MESSAGE value="3/29/2025" />
-    <option name="LAST_COMMIT_MESSAGE" value="3/29/2025" />
+    <MESSAGE value="4/4/2025" />
+    <option name="LAST_COMMIT_MESSAGE" value="4/4/2025" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
