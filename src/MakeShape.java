@@ -1,21 +1,23 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class MakeShape {
-    private ArrayList<Shape[][]> shapeArr;
-    public MakeShape() {
-        shapeArr = new ArrayList<>();
-        shapeArr.add(IShape());
-        shapeArr.add(OShape());
-        shapeArr.add(TShape());
-        shapeArr.add(SShape());
-        shapeArr.add(ZShape());
-        shapeArr.add(JShape());
-        shapeArr.add(LShape());
-    }
+    public MakeShape() {}
 
     public Shape[][] randomSelectedShape() {
-        return shapeArr.get((int) (Math.random() * 7));
+        int rand = (int) (Math.random() * 7);
+        if (rand == 0) {
+            return IShape();
+        } else if (rand == 1) {
+            return OShape();
+        } else if (rand == 2) {
+            return TShape();
+        } else if (rand == 3) {
+            return SShape();
+        } else if (rand == 4) {
+            return ZShape();
+        } else if (rand == 5) {
+            return JShape();
+        } else  {
+            return LShape();
+        }
     }
 
     private Shape[][] IShape() {

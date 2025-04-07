@@ -3,7 +3,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class TetrisFrame {
-    JPanel panel;
     JFrame frame;
     GameLogic logic;
     ArrayList<JPanel> panels;
@@ -15,6 +14,8 @@ public class TetrisFrame {
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         generateBoard();
+        frame.revalidate();
+        frame.repaint();
         frame.setVisible(true);
     }
 
@@ -22,8 +23,8 @@ public class TetrisFrame {
         return frame;
     }
 
-    // For changing the color you have to make a new gridlayout and edit each color
     public void generateBoard() {
+
         panels = new ArrayList<>();
         frame.setLayout(new GridLayout(20, 10, 1, 1));
         for (int i = 0; i < 200; i++) {
@@ -50,9 +51,9 @@ public class TetrisFrame {
             } else if (cellVal instanceof LBlock) {
                 panels.get(i).setBackground(Color.ORANGE);
             } else if (cellVal instanceof JBlock) {
-                panels.get(i).setBackground(Color.MAGENTA);
+                panels.get(i).setBackground(Color.BLUE);
             } else if (cellVal instanceof TBlock) {
-                panels.get(i).setBackground(Color.getHSBColor(153, 0, 153));
+                panels.get(i).setBackground(new Color(160, 32, 240));
             }
         }
     }
